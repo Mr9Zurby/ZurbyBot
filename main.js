@@ -17,6 +17,7 @@ bot.on('messageCreate', async message => {
 
     if(message.content === '!help') return bot.commands.get("help").run(bot, message);
     if(message.content === '!ping') return bot.commands.get("ping").run(bot, message);
+    if(message.content === '!creator') return bot.commands.get("creator").run(bot, message);
 
     if (args[0] === '!spam') {
         if (!args[1]) return message.reply('précise un pseudo à spam.');
