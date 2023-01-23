@@ -1,0 +1,11 @@
+Liste des screens: screen -ls
+
+Creer un screen: screen -S nomsession
+
+ratacher un screen: screen -r nomsession
+
+Quitter screen: [CTRL]+[a] suivi de [d] 
+
+
+
+lancer bot: node main
