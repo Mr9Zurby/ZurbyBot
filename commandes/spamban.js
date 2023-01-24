@@ -5,7 +5,7 @@ module.exports = {
     
     name: "spamban",
 
-    async run(bot, message) {
+    async run(bot, message, prefix) {
       let roleban = message.guild.roles.cache.find(role => role.name === 'banbot');
       let member = message.mentions.members.first();
 
