@@ -20,7 +20,8 @@ bot.on('messageCreate', async message => {
     const role = message.member.roles.cache.some(role => role.name === 'adminbot')
     const prefix = "!"
     
-    if(message.author != bot.user) {
+    if(message.author != bot.user && args[0].charAt() == prefix) {
+
         if(message.content == `${prefix}help`) return bot.commands.get("help").run(bot, message, prefix);
         if(message.content == `${prefix}ping`) return bot.commands.get("ping").run(bot, message, prefix);
         if(message.content == `${prefix}creator`) return bot.commands.get("creator").run(bot, message, prefix);
