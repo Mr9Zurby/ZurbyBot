@@ -15,22 +15,30 @@ loadcommandes(bot);
 bot.on('messageCreate', async message => {
     //console.log("lancement main");
     const args = message.content.trim().split(/ +/g);
-    const pseudo = message.author.username
-    const id = message.author.id
-    const role = message.member.roles.cache.some(role => role.name === 'adminbot')
     const prefix = "!"
-    
+
     if(message.author != bot.user && args[0].charAt() == prefix) {
+
+        const pseudo = message.author.username
+        const id = message.author.id
+        const role = message.member.roles.cache.some(role => role.name === 'adminbot')
 
         if(message.content == `${prefix}help`) return bot.commands.get("help").run(bot, message, prefix);
         if(message.content == `${prefix}ping`) return bot.commands.get("ping").run(bot, message, prefix);
         if(message.content == `${prefix}creator`) return bot.commands.get("creator").run(bot, message, prefix);
 
-        ////////////////////////////// Appel fonction banspam ////////////////////////////// 
+        ////////////////////////////// Appel fonction spammode ////////////////////////////// 
+        if (args[0] == `${prefix}spammode` && role) {
+            if (!args[1]) return message.reply('précise un mode (channel, message).');
+            else if (args[1].toLowerCase() != "channel" && args[1].toLowerCase() != "message") return message.reply('Choisis un mode (channel, message).');
+            else return bot.commands.get("spammode").run(bot, message, args[1].toLowerCase(), prefix);  
+        }
+        else if (args[0] == `${prefix}spammode` && !role) return message.reply("Tu n'as pas les permissions.");
+
+        ////////////////////////////// Appel fonction spamban ////////////////////////////// 
         if (args[0] == `${prefix}spamban` && role) {
             if (!args[1]) return message.reply('précise un pseudo à ban du spam.');
-            else return bot.commands.get("spamban").run(bot, message, prefix);
-            
+            else return bot.commands.get("spamban").run(bot, message, prefix); 
         }
         else if (args[0] == `${prefix}spamban` && !role) return message.reply("Tu n'as pas les permissions.");
 
@@ -39,7 +47,7 @@ bot.on('messageCreate', async message => {
             if (!args[1]) return message.reply('précise un pseudo à spam.');
             if (!args[2]) return message.reply('Précise le nombre de spam (15 max).');
             if (args[3]) return message.reply("Trop d'arguments.");
-            if (args[2] && !args[3]) return bot.commands.get("spam").run(bot, message, args[1], args[2], pseudo, id, prefix);
+            if (args[2] && !args[3]) return bot.commands.get("spam").run(bot, message, args[1], args[2], pseudo, id, prefix, config.modespam);
         }
         ////////////////////////////// Commande inexistante //////////////////////////////
         return message.reply("Cette commande n'existe pas. !help pour la liste des commandes.");

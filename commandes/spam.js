@@ -5,7 +5,9 @@ module.exports = {
 	// data: new SlashCommandBuilder()...
     name: "spam",
 
-	async run(bot, message, pseudo, nombre, initiateur, id, prefix){
+	async run(bot, message, pseudo, nombre, initiateur, id, prefix, spammode) {
+		
+		const idnumber = pseudo.substring(2, 20)
 		const role = message.member.roles.cache.some(role => role.name === 'banbot')
 
 		if (pseudo.charAt() == '@') await message.reply(`Cette personne n'est pas présente sur ce discord.`);
@@ -15,13 +17,23 @@ module.exports = {
 		else if (parseInt(nombre) > 15) await message.reply(`Calme toi sur le nombre de spam BG.`);
 		else if (role) await message.reply(`Tu es bannis de la commande ${prefix}spam. Rapproche toi d'un admin pour tenter d'être débanni.`);
 
-		if (pseudo.substring(0, 2) == '<@' && pseudo.substring(0, 3) != '<@&' && nombre <= 15 && !role) {
+		if (spammode == "channel") {
+		
+			if (pseudo.substring(0, 2) == '<@' && pseudo.substring(0, 3) != '<@&' && nombre <= 15 && !role) {
+					for (let pas = 0; pas < nombre; pas++) {
+						await message.reply(`Hey ${pseudo} t'es attendu !`);
+						await new Promise(res => setTimeout(res, 1000));
+					}
+			}
+		}
+		else if (spammode == "message") {
+			if (pseudo.substring(0, 2) == '<@' && pseudo.substring(0, 3) != '<@&' && nombre <= 15 && !role) {
 				for (let pas = 0; pas < nombre; pas++) {
-					await message.reply(`Hey ${pseudo} t'es attendu !`);
+					bot.users.cache.get(idnumber).send(`Hey ${initiateur} t'attends !`)
 					await new Promise(res => setTimeout(res, 1000));
 				}
 		}
-
+		}
 		  
 	},
 };

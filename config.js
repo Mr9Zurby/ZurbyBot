@@ -1,5 +1,6 @@
 module.exports = {
 
-    token: "Your Token Here"
+    token: "Your Token Here",
+    modespam: "channel",
 
 }
